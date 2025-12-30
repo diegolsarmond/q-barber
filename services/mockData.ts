@@ -707,16 +707,3 @@ export const saveVoucher = (voucher: Voucher) => {
     }
     return Promise.resolve(true);
 };
-
-// --- RESTRICTIONS HELPERS ---
-export const getRestrictions = () => Promise.resolve([...RESTRICTIONS_STORE]);
-
-export const saveRestriction = (restriction: ClientRestriction) => {
-    RESTRICTIONS_STORE.push({ ...restriction, id: `res_${Date.now()}` });
-    return Promise.resolve(true);
-};
-
-export const deleteRestriction = (id: string) => {
-    RESTRICTIONS_STORE = RESTRICTIONS_STORE.filter(r => r.id !== id);
-    return Promise.resolve(true);
-};
