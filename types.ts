@@ -26,7 +26,7 @@ export interface User {
 
 // --- PERMISSIONS SYSTEM ---
 
-export type PermissionKey = 
+export type PermissionKey =
   | 'view_dashboard'
   | 'view_reports'        // Novo: Módulo de Relatórios
   | 'manage_appointments' // Agenda Geral
@@ -103,7 +103,7 @@ export interface Service {
   durationMinutes: number;
   price: number;
   category: 'Barbearia' | 'Clínica' | 'Spa' | 'Médico' | 'Outro';
-  imageUrl?: string; 
+  imageUrl?: string;
   // New fields based on screenshot
   commission?: number; // %
   priceType?: 'FIXED' | 'FROM';
@@ -122,7 +122,7 @@ export interface WorkScheduleItem {
   breakStart?: string; // "12:00"
   breakEnd?: string;   // "13:00"
   isActive: boolean;
-  branchId?: string; 
+  branchId?: string;
 }
 
 export interface ProfessionalAddress {
@@ -137,9 +137,9 @@ export interface ProfessionalAddress {
 
 export interface Professional {
   id: string;
-  userId: string; 
+  userId: string;
   name: string;
-  specialties: string[]; 
+  specialties: string[];
   bio: string;
   rating: number;
   avatarUrl: string;
@@ -164,26 +164,26 @@ export interface Appointment {
   clientId: string;
   clientName: string;
   professionalId: string;
-  branchId: string; 
+  branchId: string;
   serviceId: string;
   date: string; // YYYY-MM-DD
   time: string; // HH:mm
   status: 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED' | 'BLOCKED';
   price: number;
   notes?: string;
-  rating?: number; 
+  rating?: number;
   review?: string;
-  isSqueezeIn?: boolean; 
+  isSqueezeIn?: boolean;
 }
 
 export interface Expense {
   id: string;
   description: string;
   amount: number;
-  date: string; 
+  date: string;
   category: 'Aluguel' | 'Contas' | 'Salários' | 'Estoque' | 'Marketing' | 'Outros';
   status: 'PAID' | 'PENDING';
-  recurrence?: 'WEEKLY' | 'MONTHLY' | 'YEARLY'; 
+  recurrence?: 'WEEKLY' | 'MONTHLY' | 'YEARLY';
 }
 
 export interface SubscriptionPlan {
@@ -194,7 +194,7 @@ export interface SubscriptionPlan {
   features: string[];
   active: boolean;
   billingCycle: 'MONTHLY' | 'YEARLY';
-  externalId?: string; 
+  externalId?: string;
 }
 
 export interface ClientSubscription {
@@ -214,14 +214,14 @@ export interface AuthState {
 }
 
 export interface DaySchedule {
-  start: string; 
-  end: string;   
+  start: string;
+  end: string;
   isOpen: boolean;
 }
 
 export interface SiteConfig {
   appName: string;
-  primaryColor: string; 
+  primaryColor: string;
   heroTitle: string;
   heroSubtitle: string;
   heroImage: string;
@@ -244,8 +244,8 @@ export interface AuditLog {
   action: 'CREATE' | 'UPDATE' | 'DELETE';
   entity: 'SERVICE' | 'PROFESSIONAL' | 'CLIENT' | 'EXPENSE' | 'SYSTEM' | 'BRANCH' | 'PRODUCT';
   description: string;
-  performedBy: string; 
-  timestamp: string; 
+  performedBy: string;
+  timestamp: string;
 }
 
 export type QueueStatus = 'AGUARDANDO' | 'EM_ATENDIMENTO' | 'CONCLUIDO' | 'CANCELADO';
@@ -325,35 +325,228 @@ export interface ClientRestriction {
 
 // --- WhatsApp Types ---
 
+export type WhatsAppInstanceStatus = 'disconnected' | 'connecting' | 'connected';
+export type WhatsAppPresence = 'available' | 'unavailable';
+export type WhatsAppChatPresence = 'composing' | 'recording' | 'paused';
+export type WhatsAppMessageType = 'text' | 'image' | 'video' | 'audio' | 'document' | 'ptt' | 'ptv' | 'sticker' | 'contact' | 'location' | 'poll' | 'list' | 'buttons';
+export type WhatsAppMessageStatus = 'pending' | 'sent' | 'delivered' | 'read' | 'failed';
+export type WhatsAppMediaType = 'image' | 'video' | 'document' | 'audio' | 'myaudio' | 'ptt' | 'ptv' | 'sticker';
+
 export interface WhatsAppInstance {
   id: string;
   name: string;
-  status: 'disconnected' | 'connecting' | 'connected';
+  status: WhatsAppInstanceStatus;
   token: string;
   profileName?: string;
   profilePicUrl?: string;
   number?: string;
-  qrcode?: string; // Base64
+  qrcode?: string;
+  paircode?: string;
+  isBusiness?: boolean;
+  platform?: string;
+  systemName?: string;
+  owner?: string;
+  currentPresence?: WhatsAppPresence;
+  lastDisconnect?: string;
+  lastDisconnectReason?: string;
+  adminField01?: string;
+  adminField02?: string;
+  chatbotEnabled?: boolean;
+  chatbotIgnoreGroups?: boolean;
+  chatbotStopConversation?: string;
+  chatbotStopMinutes?: number;
+  created?: string;
+  updated?: string;
 }
 
 export interface WhatsAppChat {
-  id: string; // JID
+  id: string;
   name: string;
   image?: string;
+  imagePreview?: string;
   unreadCount?: number;
   lastMessage?: string;
   lastMessageTimestamp?: number;
+  lastMessageType?: string;
+  lastMessageSender?: string;
   isGroup: boolean;
+  isGroupAdmin?: boolean;
+  isGroupAnnounce?: boolean;
   phone: string;
+  wa_archived?: boolean;
+  wa_isBlocked?: boolean;
+  wa_isPinned?: boolean;
+  wa_label?: string[];
+  wa_ephemeralExpiration?: number;
+  wa_muteEndTime?: number;
+  // Lead/CRM fields
+  lead_name?: string;
+  lead_fullName?: string;
+  lead_email?: string;
+  lead_personalId?: string;
+  lead_status?: string;
+  lead_tags?: string[];
+  lead_notes?: string;
+  lead_isTicketOpen?: boolean;
+  lead_assignedAttendantId?: string;
+  commonGroups?: string;
 }
 
 export interface WhatsAppMessage {
   id: string;
+  messageId?: string;
   chatId: string;
+  sender?: string;
+  senderName?: string;
   fromMe: boolean;
-  type: 'text' | 'image' | 'video' | 'audio' | 'document';
+  isGroup?: boolean;
+  type: WhatsAppMessageType;
+  source?: string;
   text?: string;
+  caption?: string;
   fileUrl?: string;
+  fileName?: string;
+  mimetype?: string;
   timestamp: number;
-  status: 'pending' | 'sent' | 'delivered' | 'read';
+  status: WhatsAppMessageStatus;
+  quoted?: string;
+  quotedMessage?: WhatsAppMessage;
+  edited?: string;
+  reaction?: string;
+  vote?: string;
+  convertOptions?: string;
+  buttonOrListId?: string;
+  wasSentByApi?: boolean;
+  sendFunction?: string;
+  trackSource?: string;
+  trackId?: string;
+  error?: string;
+  // Contact message
+  contactName?: string;
+  contactPhone?: string;
+  // Location message
+  locationName?: string;
+  locationAddress?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+// --- WhatsApp Webhook Types ---
+
+export type WhatsAppWebhookEvent =
+  | 'connection'
+  | 'history'
+  | 'messages'
+  | 'messages_update'
+  | 'call'
+  | 'contacts'
+  | 'presence'
+  | 'groups'
+  | 'labels'
+  | 'chats'
+  | 'chat_labels'
+  | 'blocks'
+  | 'leads';
+
+export type WhatsAppMessageFilter =
+  | 'wasSentByApi'
+  | 'wasNotSentByApi'
+  | 'fromMeYes'
+  | 'fromMeNo'
+  | 'isGroupYes'
+  | 'isGroupNo';
+
+export interface WhatsAppWebhook {
+  id?: string;
+  enabled: boolean;
+  url: string;
+  events: WhatsAppWebhookEvent[];
+  addUrlTypesMessages?: boolean;
+  addUrlEvents?: boolean;
+  excludeMessages?: WhatsAppMessageFilter[];
+}
+
+// --- WhatsApp Send Payloads ---
+
+export interface WhatsAppSendTextPayload {
+  number: string;
+  text: string;
+  delay?: number;
+  readchat?: boolean;
+  readmessages?: boolean;
+  replyid?: string;
+  mentions?: string;
+  forward?: boolean;
+  linkPreview?: boolean;
+  linkPreviewTitle?: string;
+  linkPreviewDescription?: string;
+  linkPreviewImage?: string;
+  linkPreviewLarge?: boolean;
+  trackSource?: string;
+  trackId?: string;
+  async?: boolean;
+}
+
+export interface WhatsAppSendMediaPayload {
+  number: string;
+  type: WhatsAppMediaType;
+  file: string; // URL or base64
+  text?: string; // Caption
+  docName?: string;
+  thumbnail?: string;
+  mimetype?: string;
+  delay?: number;
+  readchat?: boolean;
+  readmessages?: boolean;
+  replyid?: string;
+  mentions?: string;
+  forward?: boolean;
+  trackSource?: string;
+  trackId?: string;
+  async?: boolean;
+}
+
+export interface WhatsAppSendContactPayload {
+  number: string;
+  fullName: string;
+  phoneNumber: string; // Can be comma-separated for multiple phones
+  organization?: string;
+  email?: string;
+  url?: string;
+  delay?: number;
+  readchat?: boolean;
+  replyid?: string;
+  trackSource?: string;
+  trackId?: string;
+}
+
+export interface WhatsAppSendLocationPayload {
+  number: string;
+  name?: string;
+  address?: string;
+  latitude: number;
+  longitude: number;
+  delay?: number;
+  readchat?: boolean;
+  replyid?: string;
+  trackSource?: string;
+  trackId?: string;
+}
+
+export interface WhatsAppPresencePayload {
+  number: string;
+  presence: WhatsAppChatPresence;
+  delay?: number; // Duration in ms (max 5 min)
+}
+
+// --- WhatsApp Label Types ---
+
+export interface WhatsAppLabel {
+  id: string;
+  labelId?: string;
+  name: string;
+  color: number;
+  colorHex?: string;
+  created?: string;
+  updated?: string;
 }
