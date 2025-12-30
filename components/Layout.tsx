@@ -15,7 +15,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const { unreadCount, latestNotification, clearLatestNotification, clearNotifications } = useNotification();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  
+
   // State for collapsible menus
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
 
@@ -42,14 +42,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const isAdminOrProf = user.role === UserRole.ADMIN || user.role === UserRole.PROFESSIONAL;
 
   const hasPermission = (permission: PermissionKey): boolean => {
-      if (user.role === UserRole.ADMIN) return true;
-      if (user.profileId) {
-          const profile = ACCESS_PROFILES_STORE.find(p => p.id === user.profileId);
-          if (profile) {
-              return profile.permissions.includes(permission);
-          }
+    if (user.role === UserRole.ADMIN) return true;
+    if (user.profileId) {
+      const profile = ACCESS_PROFILES_STORE.find(p => p.id === user.profileId);
+      if (profile) {
+        return profile.permissions.includes(permission);
       }
-      return false; 
+    }
+    return false;
   };
 
   const handleNavClick = (path: string) => {
@@ -60,9 +60,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   };
 
   const toggleMenu = (menuId: string) => {
-      setExpandedMenus(prev => 
-          prev.includes(menuId) ? prev.filter(id => id !== menuId) : [...prev, menuId]
-      );
+    setExpandedMenus(prev =>
+      prev.includes(menuId) ? prev.filter(id => id !== menuId) : [...prev, menuId]
+    );
   };
 
   return (
@@ -79,15 +79,15 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </div>
         <div className="flex items-center gap-2">
           {unreadCount > 0 && (
-             <div className="relative">
-                <Bell size={24} className="text-indigo-600" />
-                <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                </span>
-             </div>
+            <div className="relative">
+              <Bell size={24} className="text-indigo-600" />
+              <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+              </span>
+            </div>
           )}
-          <button 
+          <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="p-2 text-slate-600 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none"
           >
@@ -101,34 +101,34 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         <div className="fixed top-24 md:top-6 right-4 z-[100] max-w-[calc(100vw-2rem)] w-full md:w-96 animate-slide-in-right">
           <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden ring-1 ring-black/5">
             <div className="p-4 flex gap-4">
-               <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center relative">
-                      <Bell size={24} className="text-indigo-600" />
-                      <span className="absolute top-0 right-0 h-3 w-3 bg-red-500 border-2 border-white rounded-full"></span>
-                  </div>
-               </div>
-               <div className="flex-1 min-w-0">
-                  <div className="flex justify-between items-start mb-1">
-                      <h4 className="text-sm font-bold text-slate-900">Novo Agendamento!</h4>
-                      <button onClick={clearLatestNotification} className="text-slate-400 hover:text-slate-600 p-1 -mt-1 -mr-2"><X size={16}/></button>
-                  </div>
-                  <p className="text-xs text-slate-500 mb-3 line-clamp-2">
-                      <span className="font-bold text-slate-700">{latestNotification.clientName}</span> agendou para <span className="font-bold text-indigo-600">{new Date(latestNotification.date + 'T12:00:00').toLocaleDateString('pt-BR')} às {latestNotification.time}</span>.
-                  </p>
-                  <button 
-                      onClick={() => {
-                          navigate(isProfessional ? '/professional/appointments' : '/admin/appointments');
-                          clearNotifications();
-                          clearLatestNotification();
-                      }}
-                      className="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg w-full transition-colors shadow-lg shadow-indigo-100"
-                  >
-                      Ver Detalhes
-                  </button>
-               </div>
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center relative">
+                  <Bell size={24} className="text-indigo-600" />
+                  <span className="absolute top-0 right-0 h-3 w-3 bg-red-500 border-2 border-white rounded-full"></span>
+                </div>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-start mb-1">
+                  <h4 className="text-sm font-bold text-slate-900">Novo Agendamento!</h4>
+                  <button onClick={clearLatestNotification} className="text-slate-400 hover:text-slate-600 p-1 -mt-1 -mr-2"><X size={16} /></button>
+                </div>
+                <p className="text-xs text-slate-500 mb-3 line-clamp-2">
+                  <span className="font-bold text-slate-700">{latestNotification.clientName}</span> agendou para <span className="font-bold text-indigo-600">{new Date(latestNotification.date + 'T12:00:00').toLocaleDateString('pt-BR')} às {latestNotification.time}</span>.
+                </p>
+                <button
+                  onClick={() => {
+                    navigate(isProfessional ? '/professional/appointments' : '/admin/appointments');
+                    clearNotifications();
+                    clearLatestNotification();
+                  }}
+                  className="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg w-full transition-colors shadow-lg shadow-indigo-100"
+                >
+                  Ver Detalhes
+                </button>
+              </div>
             </div>
             <div className="h-1 bg-gray-100 w-full">
-                <div className="h-full bg-indigo-500 w-full animate-[width_7s_linear_forwards]" style={{width: '100%'}}></div>
+              <div className="h-full bg-indigo-500 w-full animate-[width_7s_linear_forwards]" style={{ width: '100%' }}></div>
             </div>
           </div>
         </div>
@@ -136,8 +136,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
       {/* Backdrop */}
       {isMobileMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity" 
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -153,7 +153,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             {isClient ? 'C' : isProfessional ? 'P' : 'A'}
           </div>
           <span className="font-bold text-xl text-slate-800 tracking-tight">
-             Mestre
+            Mestre
           </span>
         </div>
 
@@ -166,7 +166,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               <NavLink to="/my-appointments" icon={<Calendar size={20} />} active={location.pathname === '/my-appointments'}>
                 Meus Agendamentos
               </NavLink>
-               <NavLink to="/subscription" icon={<Crown size={20} />} active={location.pathname === '/subscription'}>
+              <NavLink to="/subscription" icon={<Crown size={20} />} active={location.pathname === '/subscription'}>
                 Minha Assinatura
               </NavLink>
             </>
@@ -177,188 +177,194 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   <NavLink to="/professional" icon={<ClipboardList size={20} />} active={location.pathname === '/professional'}>
                     Minha Agenda
                   </NavLink>
-                  <NavLink 
-                    to="/professional/appointments" 
-                    icon={<CheckSquare size={20} />} 
+                  <NavLink
+                    to="/professional/appointments"
+                    icon={<CheckSquare size={20} />}
                     active={location.pathname === '/professional/appointments'}
                     badge={unreadCount > 0 ? unreadCount : undefined}
                     onClick={() => handleNavClick('/professional/appointments')}
                   >
                     Meus Atendimentos
                   </NavLink>
+                  <NavLink
+                    to="/professional/settings"
+                    icon={<Sliders size={20} />}
+                    active={location.pathname === '/professional/settings'}
+                  >
+                    Minhas Configurações
+                  </NavLink>
                 </>
               )}
 
               <div className="pt-4 mt-4 border-t border-gray-100">
                 <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Geral</p>
-                
+
                 {hasPermission('view_dashboard') && (
-                    <NavLink to="/admin" icon={<PieChart size={20} />} active={location.pathname === '/admin'}>
-                        Visão Geral
-                    </NavLink>
+                  <NavLink to="/admin" icon={<PieChart size={20} />} active={location.pathname === '/admin'}>
+                    Visão Geral
+                  </NavLink>
                 )}
 
                 {hasPermission('view_reports') && (
-                    <div className="space-y-1">
-                        <button 
-                            onClick={() => toggleMenu('reports')}
-                            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
-                                location.pathname.includes('/admin/reports') || expandedMenus.includes('reports')
-                                ? 'text-slate-900 bg-gray-50 font-bold' 
-                                : 'text-slate-600 hover:bg-gray-50'
-                            }`}
+                  <div className="space-y-1">
+                    <button
+                      onClick={() => toggleMenu('reports')}
+                      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${location.pathname.includes('/admin/reports') || expandedMenus.includes('reports')
+                          ? 'text-slate-900 bg-gray-50 font-bold'
+                          : 'text-slate-600 hover:bg-gray-50'
+                        }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <BarChart3 size={20} className={location.pathname.includes('/admin/reports') ? 'text-indigo-600' : 'text-slate-400'} />
+                        <span className="text-sm">Relatórios</span>
+                      </div>
+                      {expandedMenus.includes('reports') ? <ChevronDown size={16} /> : <ChevronRightIcon size={16} />}
+                    </button>
+
+                    {expandedMenus.includes('reports') && (
+                      <div className="pl-4 ml-4 border-l-2 border-gray-100 space-y-1 py-1">
+                        <SubMenuTrigger
+                          label="Agendamentos"
+                          isOpen={expandedMenus.includes('reports-agendamentos')}
+                          onClick={() => toggleMenu('reports-agendamentos')}
                         >
-                            <div className="flex items-center gap-3">
-                                <BarChart3 size={20} className={location.pathname.includes('/admin/reports') ? 'text-indigo-600' : 'text-slate-400'}/>
-                                <span className="text-sm">Relatórios</span>
-                            </div>
-                            {expandedMenus.includes('reports') ? <ChevronDown size={16}/> : <ChevronRightIcon size={16}/>}
-                        </button>
-                        
-                        {expandedMenus.includes('reports') && (
-                            <div className="pl-4 ml-4 border-l-2 border-gray-100 space-y-1 py-1">
-                                <SubMenuTrigger 
-                                    label="Agendamentos" 
-                                    isOpen={expandedMenus.includes('reports-agendamentos')} 
-                                    onClick={() => toggleMenu('reports-agendamentos')} 
-                                >
-                                    <SubLink to="/admin/reports?tab=geral" label="Geral" active={location.search.includes('tab=geral')} />
-                                    <SubLink to="/admin/reports?tab=clientes" label="Clientes" active={location.search.includes('tab=clientes')} />
-                                    <SubLink to="/admin/reports?tab=profissionais" label="Profissionais" active={location.search.includes('tab=profissionais')} />
-                                </SubMenuTrigger>
+                          <SubLink to="/admin/reports?tab=geral" label="Geral" active={location.search.includes('tab=geral')} />
+                          <SubLink to="/admin/reports?tab=clientes" label="Clientes" active={location.search.includes('tab=clientes')} />
+                          <SubLink to="/admin/reports?tab=profissionais" label="Profissionais" active={location.search.includes('tab=profissionais')} />
+                        </SubMenuTrigger>
 
-                                <SubMenuTrigger 
-                                    label="Gerencial" 
-                                    isOpen={expandedMenus.includes('reports-gerencial')} 
-                                    onClick={() => toggleMenu('reports-gerencial')} 
-                                >
-                                    <SubLink to="/admin/reports?tab=financeiro" label="Financeiro" active={location.search.includes('tab=financeiro')} />
-                                    <SubLink to="/admin/reports?tab=estoque" label="Estoque" active={location.search.includes('tab=estoque')} />
-                                    <SubLink to="/admin/reports?tab=rankings" label="Rankings" active={location.search.includes('tab=rankings')} />
-                                </SubMenuTrigger>
+                        <SubMenuTrigger
+                          label="Gerencial"
+                          isOpen={expandedMenus.includes('reports-gerencial')}
+                          onClick={() => toggleMenu('reports-gerencial')}
+                        >
+                          <SubLink to="/admin/reports?tab=financeiro" label="Financeiro" active={location.search.includes('tab=financeiro')} />
+                          <SubLink to="/admin/reports?tab=estoque" label="Estoque" active={location.search.includes('tab=estoque')} />
+                          <SubLink to="/admin/reports?tab=rankings" label="Rankings" active={location.search.includes('tab=rankings')} />
+                        </SubMenuTrigger>
 
-                                <Link to="/admin/reports?tab=aniversariantes" className="block px-4 py-2 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
-                                    Aniversariantes
-                                </Link>
-                            </div>
-                        )}
-                    </div>
+                        <Link to="/admin/reports?tab=aniversariantes" className="block px-4 py-2 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                          Aniversariantes
+                        </Link>
+                      </div>
+                    )}
+                  </div>
                 )}
 
                 {/* New Reviews Section */}
-                <NavLink to="/admin/reviews" 
-                    icon={<Star size={20} />} 
-                    active={location.pathname === '/admin/reviews'}
+                <NavLink to="/admin/reviews"
+                  icon={<Star size={20} />}
+                  active={location.pathname === '/admin/reviews'}
                 >
-                    Avaliações
+                  Avaliações
                 </NavLink>
 
                 {hasPermission('manage_appointments') && (
-                    <NavLink to="/admin/appointments" 
-                        icon={<Calendar size={20} />} 
-                        active={location.pathname === '/admin/appointments'}
-                        onClick={() => handleNavClick('/admin/appointments')}
-                        badge={unreadCount > 0 ? unreadCount : undefined}
-                    >
-                        Todos Agendamentos
-                    </NavLink>
+                  <NavLink to="/admin/appointments"
+                    icon={<Calendar size={20} />}
+                    active={location.pathname === '/admin/appointments'}
+                    onClick={() => handleNavClick('/admin/appointments')}
+                    badge={unreadCount > 0 ? unreadCount : undefined}
+                  >
+                    Todos Agendamentos
+                  </NavLink>
                 )}
-                
+
                 {hasPermission('manage_queue') && (
-                    <NavLink to="/admin/queue" 
-                        icon={<List size={20} />} 
-                        active={location.pathname === '/admin/queue'}
-                    >
-                        Ordem de Chegada
-                    </NavLink>
+                  <NavLink to="/admin/queue"
+                    icon={<List size={20} />}
+                    active={location.pathname === '/admin/queue'}
+                  >
+                    Ordem de Chegada
+                  </NavLink>
                 )}
 
                 {hasPermission('manage_waiting_list') && (
-                    <NavLink to="/admin/waiting-list" 
-                        icon={<Timer size={20} />} 
-                        active={location.pathname === '/admin/waiting-list'}
-                    >
-                        Lista de Espera
-                    </NavLink>
+                  <NavLink to="/admin/waiting-list"
+                    icon={<Timer size={20} />}
+                    active={location.pathname === '/admin/waiting-list'}
+                  >
+                    Lista de Espera
+                  </NavLink>
                 )}
 
-                <NavLink to="/admin/conversations" 
-                    icon={<MessageSquare size={20} />} 
-                    active={location.pathname.includes('conversations')}
+                <NavLink to="/admin/conversations"
+                  icon={<MessageSquare size={20} />}
+                  active={location.pathname.includes('conversations')}
                 >
-                    Conversas (WhatsApp)
+                  Conversas (WhatsApp)
                 </NavLink>
               </div>
 
               <div className="pt-4 mt-4 border-t border-gray-100">
                 <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Administrativo</p>
-                
+
                 {hasPermission('manage_financial') && (
-                    <NavLink to="/admin/financial" icon={<DollarSign size={20} />} active={location.pathname === '/admin/financial'}>
-                        Gestão Financeira
-                    </NavLink>
+                  <NavLink to="/admin/financial" icon={<DollarSign size={20} />} active={location.pathname === '/admin/financial'}>
+                    Gestão Financeira
+                  </NavLink>
                 )}
-                
+
                 {hasPermission('manage_branches') && (
-                    <NavLink to="/admin/branches" icon={<Building2 size={20} />} active={location.pathname.includes('branches')}>
-                        Filiais
-                    </NavLink>
+                  <NavLink to="/admin/branches" icon={<Building2 size={20} />} active={location.pathname.includes('branches')}>
+                    Filiais
+                  </NavLink>
                 )}
                 {hasPermission('manage_services') && (
-                    <NavLink to="/admin/services" icon={<Settings size={20} />} active={location.pathname.includes('services')}>
-                        Serviços
-                    </NavLink>
+                  <NavLink to="/admin/services" icon={<Settings size={20} />} active={location.pathname.includes('services')}>
+                    Serviços
+                  </NavLink>
                 )}
                 {hasPermission('manage_products') && (
-                    <NavLink to="/admin/products" icon={<ShoppingBag size={20} />} active={location.pathname.includes('products')}>
-                        Produtos
-                    </NavLink>
+                  <NavLink to="/admin/products" icon={<ShoppingBag size={20} />} active={location.pathname.includes('products')}>
+                    Produtos
+                  </NavLink>
                 )}
                 {hasPermission('manage_professionals') && (
-                    <NavLink to="/admin/professionals" icon={<Briefcase size={20} />} active={location.pathname.includes('professionals')}>
-                        Profissionais
-                    </NavLink>
+                  <NavLink to="/admin/professionals" icon={<Briefcase size={20} />} active={location.pathname.includes('professionals')}>
+                    Profissionais
+                  </NavLink>
                 )}
                 {hasPermission('manage_subscriptions') && (
-                    <NavLink to="/admin/subscriptions" icon={<Crown size={20} />} active={location.pathname.includes('subscriptions')}>
-                        Assinaturas
-                    </NavLink>
+                  <NavLink to="/admin/subscriptions" icon={<Crown size={20} />} active={location.pathname.includes('subscriptions')}>
+                    Assinaturas
+                  </NavLink>
                 )}
                 {hasPermission('manage_clients') && (
-                    <NavLink to="/admin/clients" icon={<Users size={20} />} active={location.pathname.includes('clients')}>
-                        Clientes
-                    </NavLink>
+                  <NavLink to="/admin/clients" icon={<Users size={20} />} active={location.pathname.includes('clients')}>
+                    Clientes
+                  </NavLink>
                 )}
               </div>
-              
+
               {(hasPermission('manage_settings') || hasPermission('view_logs')) && (
-                  <div className="pt-4 mt-4 border-t border-gray-100">
-                    <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Sistema</p>
-                    
-                    {hasPermission('manage_settings') && (
-                        <>
-                            <NavLink to="/admin/settings" icon={<Sliders size={20} />} active={location.pathname.includes('settings') && !location.pathname.includes('profiles')}>
-                                Site & CMS
-                            </NavLink>
-                            <NavLink to="/admin/profiles" icon={<Shield size={20} />} active={location.pathname.includes('profiles')}>
-                                Perfis de Acesso
-                            </NavLink>
-                        </>
-                    )}
-                    
-                    {hasPermission('view_logs') && (
-                        <NavLink to="/admin/logs" icon={<FileText size={20} />} active={location.pathname.includes('logs')}>
-                            Logs do Sistema
-                        </NavLink>
-                    )}
-                  </div>
+                <div className="pt-4 mt-4 border-t border-gray-100">
+                  <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Sistema</p>
+
+                  {hasPermission('manage_settings') && (
+                    <>
+                      <NavLink to="/admin/settings" icon={<Sliders size={20} />} active={location.pathname.includes('settings') && !location.pathname.includes('profiles')}>
+                        Site & CMS
+                      </NavLink>
+                      <NavLink to="/admin/profiles" icon={<Shield size={20} />} active={location.pathname.includes('profiles')}>
+                        Perfis de Acesso
+                      </NavLink>
+                    </>
+                  )}
+
+                  {hasPermission('view_logs') && (
+                    <NavLink to="/admin/logs" icon={<FileText size={20} />} active={location.pathname.includes('logs')}>
+                      Logs do Sistema
+                    </NavLink>
+                  )}
+                </div>
               )}
             </>
           )}
         </nav>
 
         <div className="p-4 border-t border-gray-100 mt-auto">
-          <button 
+          <button
             onClick={() => setIsProfileModalOpen(true)}
             className="w-full flex items-center gap-3 mb-4 p-2 bg-gray-50 rounded-xl hover:bg-indigo-50 transition-colors group text-left"
           >
@@ -389,7 +395,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       {isProfileModalOpen && (
         <div className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in">
           <div className="bg-white rounded-3xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl relative">
-             <ProfileSettings isModal={true} onClose={() => setIsProfileModalOpen(false)} />
+            <ProfileSettings isModal={true} onClose={() => setIsProfileModalOpen(false)} />
           </div>
         </div>
       )}
@@ -411,11 +417,10 @@ const NavLink = ({ to, icon, children, active, badge, onClick }: NavLinkProps) =
   <Link
     to={to}
     onClick={onClick}
-    className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all relative overflow-hidden ${
-      active
+    className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all relative overflow-hidden ${active
         ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-100'
         : 'text-slate-600 hover:bg-gray-50 hover:text-slate-900'
-    }`}
+      }`}
   >
     <div className="flex items-center gap-3 relative z-10">
       <span className={active ? 'text-white' : 'text-slate-400'}>{icon}</span>
@@ -423,32 +428,32 @@ const NavLink = ({ to, icon, children, active, badge, onClick }: NavLinkProps) =
     </div>
     {badge && (
       <div className="flex items-center justify-center">
-         <span className={`animate-ping absolute right-4 inline-flex h-4 w-4 rounded-full ${active ? 'bg-white opacity-40' : 'bg-red-400 opacity-75'}`}></span>
-         <span className={`relative inline-flex rounded-full h-5 w-5 text-[10px] font-bold items-center justify-center ${active ? 'bg-white text-indigo-600' : 'bg-red-500 text-white shadow-sm'}`}>
-            {badge > 99 ? '99+' : badge}
-         </span>
+        <span className={`animate-ping absolute right-4 inline-flex h-4 w-4 rounded-full ${active ? 'bg-white opacity-40' : 'bg-red-400 opacity-75'}`}></span>
+        <span className={`relative inline-flex rounded-full h-5 w-5 text-[10px] font-bold items-center justify-center ${active ? 'bg-white text-indigo-600' : 'bg-red-500 text-white shadow-sm'}`}>
+          {badge > 99 ? '99+' : badge}
+        </span>
       </div>
     )}
   </Link>
 );
 
 const SubMenuTrigger = ({ label, isOpen, onClick, children }: any) => (
-    <div>
-        <button 
-            onClick={onClick} 
-            className="w-full flex items-center justify-between px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-gray-50 rounded-lg transition-colors"
-        >
-            <span className="flex items-center gap-2 font-medium">{isOpen ? <ChevronDown size={14}/> : <ChevronRightIcon size={14}/>} {label}</span>
-        </button>
-        {isOpen && <div className="pl-6 space-y-1 mt-1">{children}</div>}
-    </div>
+  <div>
+    <button
+      onClick={onClick}
+      className="w-full flex items-center justify-between px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-gray-50 rounded-lg transition-colors"
+    >
+      <span className="flex items-center gap-2 font-medium">{isOpen ? <ChevronDown size={14} /> : <ChevronRightIcon size={14} />} {label}</span>
+    </button>
+    {isOpen && <div className="pl-6 space-y-1 mt-1">{children}</div>}
+  </div>
 );
 
 const SubLink = ({ to, label, active }: any) => (
-    <Link 
-        to={to} 
-        className={`block px-4 py-2 text-xs rounded-lg transition-colors ${active ? 'text-indigo-700 bg-indigo-50 font-bold' : 'text-slate-500 hover:text-slate-800'}`}
-    >
-        {label}
-    </Link>
+  <Link
+    to={to}
+    className={`block px-4 py-2 text-xs rounded-lg transition-colors ${active ? 'text-indigo-700 bg-indigo-50 font-bold' : 'text-slate-500 hover:text-slate-800'}`}
+  >
+    {label}
+  </Link>
 );

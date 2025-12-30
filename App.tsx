@@ -27,6 +27,7 @@ import { Reports } from './pages/admin/Reports';
 import { Reviews } from './pages/admin/Reviews';
 import { ProfessionalDashboard } from './pages/professional/ProfessionalDashboard';
 import { ProfessionalAppointments } from './pages/professional/ProfessionalAppointments';
+import { ProfessionalSettings } from './pages/professional/ProfessionalSettings';
 import { WhatsAppChat } from './pages/admin/WhatsAppChat';
 import { ProfileSettings } from './pages/ProfileSettings';
 import { UserRole } from './types';
@@ -34,7 +35,7 @@ import { UserRole } from './types';
 // Protected Route Wrapper
 const ProtectedRoute = ({ children, allowedRoles }: { children?: React.ReactNode, allowedRoles?: UserRole[] }) => {
   const { user } = useAuth();
-  
+
   if (!user) {
     return <Navigate to="/login" replace />;
   }
@@ -69,254 +70,264 @@ const AppRoutes = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
-        
-        <Route 
-          path="/login" 
+
+        <Route
+          path="/login"
           element={
-            user 
-              ? <Navigate to={getRedirectPath()} replace /> 
+            user
+              ? <Navigate to={getRedirectPath()} replace />
               : <Login />
-          } 
+          }
         />
 
         {/* Unified Profile Route */}
-        <Route 
-          path="/profile" 
+        <Route
+          path="/profile"
           element={
             <ProtectedRoute>
               <AppLayout>
                 <ProfileSettings />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
 
         {/* Client Routes */}
-        <Route 
-          path="/book" 
+        <Route
+          path="/book"
           element={
             <ProtectedRoute allowedRoles={[UserRole.CLIENT]}>
               <AppLayout>
                 <BookingWizard />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/my-appointments" 
+        <Route
+          path="/my-appointments"
           element={
             <ProtectedRoute allowedRoles={[UserRole.CLIENT]}>
               <AppLayout>
                 <MyAppointments />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/subscription" 
+        <Route
+          path="/subscription"
           element={
             <ProtectedRoute allowedRoles={[UserRole.CLIENT]}>
               <AppLayout>
                 <ClientSubscription />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
 
         {/* Professional Routes */}
-        <Route 
-          path="/professional" 
+        <Route
+          path="/professional"
           element={
             <ProtectedRoute allowedRoles={[UserRole.PROFESSIONAL]}>
               <AppLayout>
                 <ProfessionalDashboard />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/professional/appointments" 
+        <Route
+          path="/professional/appointments"
           element={
             <ProtectedRoute allowedRoles={[UserRole.PROFESSIONAL]}>
               <AppLayout>
                 <ProfessionalAppointments />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
+        />
+        <Route
+          path="/professional/settings"
+          element={
+            <ProtectedRoute allowedRoles={[UserRole.PROFESSIONAL]}>
+              <AppLayout>
+                <ProfessionalSettings />
+              </AppLayout>
+            </ProtectedRoute>
+          }
         />
 
         {/* Admin Routes */}
-        <Route 
-          path="/admin/services" 
+        <Route
+          path="/admin/services"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
               <AppLayout>
                 <ManageServices />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/products" 
+        <Route
+          path="/admin/products"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
               <AppLayout>
                 <ManageProducts />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/professionals" 
+        <Route
+          path="/admin/professionals"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
               <AppLayout>
                 <ManageProfessionals />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/branches" 
+        <Route
+          path="/admin/branches"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
               <AppLayout>
                 <ManageBranches />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/subscriptions" 
+        <Route
+          path="/admin/subscriptions"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
               <AppLayout>
                 <ManageSubscriptions />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/clients" 
+        <Route
+          path="/admin/clients"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
               <AppLayout>
                 <ManageClients />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-         <Route 
-          path="/admin/appointments" 
+        <Route
+          path="/admin/appointments"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN, UserRole.PROFESSIONAL]}>
               <AppLayout>
                 <AppointmentsList />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/waiting-list" 
+        <Route
+          path="/admin/waiting-list"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN, UserRole.PROFESSIONAL]}>
               <AppLayout>
                 <WaitingList />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/queue" 
+        <Route
+          path="/admin/queue"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN, UserRole.PROFESSIONAL]}>
               <AppLayout>
                 <WalkInQueue />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/conversations" 
+        <Route
+          path="/admin/conversations"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN, UserRole.PROFESSIONAL]}>
               <AppLayout>
                 <WhatsAppChat />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/financial" 
+        <Route
+          path="/admin/financial"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
               <AppLayout>
                 <FinancialDashboard />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/reports" 
+        <Route
+          path="/admin/reports"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
               <AppLayout>
                 <Reports />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/reviews" 
+        <Route
+          path="/admin/reviews"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN, UserRole.PROFESSIONAL]}>
               <AppLayout>
                 <Reviews />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/settings" 
+        <Route
+          path="/admin/settings"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
               <AppLayout>
                 <SiteSettings />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/profiles" 
+        <Route
+          path="/admin/profiles"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
               <AppLayout>
                 <ManageProfiles />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/logs" 
+        <Route
+          path="/admin/logs"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
               <AppLayout>
                 <SystemLogs />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
-        
+
         {/* Admin Dashboard (Shared View) */}
-        <Route 
-          path="/admin" 
+        <Route
+          path="/admin"
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN, UserRole.PROFESSIONAL]}>
               <AppLayout>
                 <AdminDashboard />
               </AppLayout>
             </ProtectedRoute>
-          } 
+          }
         />
 
         {/* Catch all - Redirect to Landing Page */}
