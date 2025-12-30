@@ -196,27 +196,95 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 </>
               )}
 
-              <div className="pt-4 mt-4 border-t border-gray-100">
-                <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Geral</p>
-
-                {hasPermission('view_dashboard') && (
+              {/* ═══════════════════════════════════════════════════════════
+                  SEÇÃO: DASHBOARD
+                  ════════════════════════════════════════════════════════════ */}
+              {hasPermission('view_dashboard') && (
+                <div className="pt-4 mt-4 border-t border-gray-100">
+                  <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">📊 Dashboard</p>
                   <NavLink to="/admin" icon={<PieChart size={20} />} active={location.pathname === '/admin'}>
                     Visão Geral
                   </NavLink>
-                )}
+                </div>
+              )}
 
-                {hasPermission('view_reports') && (
+              {/* ═══════════════════════════════════════════════════════════
+                  SEÇÃO: ATENDIMENTOS
+                  ════════════════════════════════════════════════════════════ */}
+              {(hasPermission('manage_appointments') || hasPermission('manage_queue') || hasPermission('manage_waiting_list')) && (
+                <div className="pt-4 mt-4 border-t border-gray-100">
+                  <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">📅 Atendimentos</p>
+
+                  {hasPermission('manage_appointments') && (
+                    <NavLink to="/admin/appointments"
+                      icon={<Calendar size={20} />}
+                      active={location.pathname === '/admin/appointments'}
+                      onClick={() => handleNavClick('/admin/appointments')}
+                      badge={unreadCount > 0 ? unreadCount : undefined}
+                    >
+                      Agendamentos
+                    </NavLink>
+                  )}
+
+                  {hasPermission('manage_queue') && (
+                    <NavLink to="/admin/queue"
+                      icon={<List size={20} />}
+                      active={location.pathname === '/admin/queue'}
+                    >
+                      Ordem de Chegada
+                    </NavLink>
+                  )}
+
+                  {hasPermission('manage_waiting_list') && (
+                    <NavLink to="/admin/waiting-list"
+                      icon={<Timer size={20} />}
+                      active={location.pathname === '/admin/waiting-list'}
+                    >
+                      Lista de Espera
+                    </NavLink>
+                  )}
+                </div>
+              )}
+
+              {/* ═══════════════════════════════════════════════════════════
+                  SEÇÃO: COMUNICAÇÃO
+                  ════════════════════════════════════════════════════════════ */}
+              <div className="pt-4 mt-4 border-t border-gray-100">
+                <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">💬 Comunicação</p>
+
+                <NavLink to="/admin/conversations"
+                  icon={<MessageSquare size={20} />}
+                  active={location.pathname.includes('conversations')}
+                >
+                  WhatsApp
+                </NavLink>
+
+                <NavLink to="/admin/reviews"
+                  icon={<Star size={20} />}
+                  active={location.pathname === '/admin/reviews'}
+                >
+                  Avaliações
+                </NavLink>
+              </div>
+
+              {/* ═══════════════════════════════════════════════════════════
+                  SEÇÃO: RELATÓRIOS
+                  ════════════════════════════════════════════════════════════ */}
+              {hasPermission('view_reports') && (
+                <div className="pt-4 mt-4 border-t border-gray-100">
+                  <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">📈 Relatórios</p>
+
                   <div className="space-y-1">
                     <button
                       onClick={() => toggleMenu('reports')}
                       className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${location.pathname.includes('/admin/reports') || expandedMenus.includes('reports')
-                          ? 'text-slate-900 bg-gray-50 font-bold'
-                          : 'text-slate-600 hover:bg-gray-50'
+                        ? 'text-slate-900 bg-gray-50 font-bold'
+                        : 'text-slate-600 hover:bg-gray-50'
                         }`}
                     >
                       <div className="flex items-center gap-3">
                         <BarChart3 size={20} className={location.pathname.includes('/admin/reports') ? 'text-indigo-600' : 'text-slate-400'} />
-                        <span className="text-sm">Relatórios</span>
+                        <span className="text-sm">Ver Relatórios</span>
                       </div>
                       {expandedMenus.includes('reports') ? <ChevronDown size={16} /> : <ChevronRightIcon size={16} />}
                     </button>
@@ -249,97 +317,91 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                       </div>
                     )}
                   </div>
-                )}
+                </div>
+              )}
 
-                {/* New Reviews Section */}
-                <NavLink to="/admin/reviews"
-                  icon={<Star size={20} />}
-                  active={location.pathname === '/admin/reviews'}
-                >
-                  Avaliações
-                </NavLink>
+              {/* ═══════════════════════════════════════════════════════════
+                  SEÇÃO: CATÁLOGO
+                  ════════════════════════════════════════════════════════════ */}
+              {(hasPermission('manage_services') || hasPermission('manage_products')) && (
+                <div className="pt-4 mt-4 border-t border-gray-100">
+                  <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">📦 Catálogo</p>
 
-                {hasPermission('manage_appointments') && (
-                  <NavLink to="/admin/appointments"
-                    icon={<Calendar size={20} />}
-                    active={location.pathname === '/admin/appointments'}
-                    onClick={() => handleNavClick('/admin/appointments')}
-                    badge={unreadCount > 0 ? unreadCount : undefined}
-                  >
-                    Todos Agendamentos
-                  </NavLink>
-                )}
+                  {hasPermission('manage_services') && (
+                    <NavLink to="/admin/services" icon={<Sparkles size={20} />} active={location.pathname.includes('services')}>
+                      Serviços
+                    </NavLink>
+                  )}
 
-                {hasPermission('manage_queue') && (
-                  <NavLink to="/admin/queue"
-                    icon={<List size={20} />}
-                    active={location.pathname === '/admin/queue'}
-                  >
-                    Ordem de Chegada
-                  </NavLink>
-                )}
+                  {hasPermission('manage_products') && (
+                    <NavLink to="/admin/products" icon={<ShoppingBag size={20} />} active={location.pathname.includes('products')}>
+                      Produtos
+                    </NavLink>
+                  )}
+                </div>
+              )}
 
-                {hasPermission('manage_waiting_list') && (
-                  <NavLink to="/admin/waiting-list"
-                    icon={<Timer size={20} />}
-                    active={location.pathname === '/admin/waiting-list'}
-                  >
-                    Lista de Espera
-                  </NavLink>
-                )}
+              {/* ═══════════════════════════════════════════════════════════
+                  SEÇÃO: PESSOAS
+                  ════════════════════════════════════════════════════════════ */}
+              {(hasPermission('manage_clients') || hasPermission('manage_professionals')) && (
+                <div className="pt-4 mt-4 border-t border-gray-100">
+                  <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">👥 Pessoas</p>
 
-                <NavLink to="/admin/conversations"
-                  icon={<MessageSquare size={20} />}
-                  active={location.pathname.includes('conversations')}
-                >
-                  Conversas (WhatsApp)
-                </NavLink>
-              </div>
+                  {hasPermission('manage_clients') && (
+                    <NavLink to="/admin/clients" icon={<Users size={20} />} active={location.pathname.includes('clients')}>
+                      Clientes
+                    </NavLink>
+                  )}
 
-              <div className="pt-4 mt-4 border-t border-gray-100">
-                <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Administrativo</p>
+                  {hasPermission('manage_professionals') && (
+                    <NavLink to="/admin/professionals" icon={<Briefcase size={20} />} active={location.pathname.includes('professionals')}>
+                      Profissionais
+                    </NavLink>
+                  )}
+                </div>
+              )}
 
-                {hasPermission('manage_financial') && (
+              {/* ═══════════════════════════════════════════════════════════
+                  SEÇÃO: ORGANIZAÇÃO
+                  ════════════════════════════════════════════════════════════ */}
+              {(hasPermission('manage_branches') || hasPermission('manage_subscriptions')) && (
+                <div className="pt-4 mt-4 border-t border-gray-100">
+                  <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">🏢 Organização</p>
+
+                  {hasPermission('manage_branches') && (
+                    <NavLink to="/admin/branches" icon={<Building2 size={20} />} active={location.pathname.includes('branches')}>
+                      Filiais
+                    </NavLink>
+                  )}
+
+                  {hasPermission('manage_subscriptions') && (
+                    <NavLink to="/admin/subscriptions" icon={<Crown size={20} />} active={location.pathname.includes('subscriptions')}>
+                      Assinaturas
+                    </NavLink>
+                  )}
+                </div>
+              )}
+
+              {/* ═══════════════════════════════════════════════════════════
+                  SEÇÃO: FINANCEIRO
+                  ════════════════════════════════════════════════════════════ */}
+              {hasPermission('manage_financial') && (
+                <div className="pt-4 mt-4 border-t border-gray-100">
+                  <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">💰 Financeiro</p>
+
                   <NavLink to="/admin/financial" icon={<DollarSign size={20} />} active={location.pathname === '/admin/financial'}>
                     Gestão Financeira
                   </NavLink>
-                )}
+                </div>
+              )}
 
-                {hasPermission('manage_branches') && (
-                  <NavLink to="/admin/branches" icon={<Building2 size={20} />} active={location.pathname.includes('branches')}>
-                    Filiais
-                  </NavLink>
-                )}
-                {hasPermission('manage_services') && (
-                  <NavLink to="/admin/services" icon={<Settings size={20} />} active={location.pathname.includes('services')}>
-                    Serviços
-                  </NavLink>
-                )}
-                {hasPermission('manage_products') && (
-                  <NavLink to="/admin/products" icon={<ShoppingBag size={20} />} active={location.pathname.includes('products')}>
-                    Produtos
-                  </NavLink>
-                )}
-                {hasPermission('manage_professionals') && (
-                  <NavLink to="/admin/professionals" icon={<Briefcase size={20} />} active={location.pathname.includes('professionals')}>
-                    Profissionais
-                  </NavLink>
-                )}
-                {hasPermission('manage_subscriptions') && (
-                  <NavLink to="/admin/subscriptions" icon={<Crown size={20} />} active={location.pathname.includes('subscriptions')}>
-                    Assinaturas
-                  </NavLink>
-                )}
-                {hasPermission('manage_clients') && (
-                  <NavLink to="/admin/clients" icon={<Users size={20} />} active={location.pathname.includes('clients')}>
-                    Clientes
-                  </NavLink>
-                )}
-              </div>
-
+              {/* ═══════════════════════════════════════════════════════════
+                  SEÇÃO: SISTEMA
+                  ════════════════════════════════════════════════════════════ */}
               {(hasPermission('manage_settings') || hasPermission('view_logs')) && (
                 <div className="pt-4 mt-4 border-t border-gray-100">
-                  <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Sistema</p>
+                  <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">⚙️ Sistema</p>
 
                   {hasPermission('manage_settings') && (
                     <>
@@ -418,8 +480,8 @@ const NavLink = ({ to, icon, children, active, badge, onClick }: NavLinkProps) =
     to={to}
     onClick={onClick}
     className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all relative overflow-hidden ${active
-        ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-100'
-        : 'text-slate-600 hover:bg-gray-50 hover:text-slate-900'
+      ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-100'
+      : 'text-slate-600 hover:bg-gray-50 hover:text-slate-900'
       }`}
   >
     <div className="flex items-center gap-3 relative z-10">
